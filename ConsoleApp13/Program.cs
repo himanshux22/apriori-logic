@@ -155,14 +155,23 @@ namespace ConsoleApp13
         public static void supportForpairs(ArrayList twoElementsPair)
         {
             string[] ret;
-            
+            int count1=0, count2=0;
             foreach (var item in twoElementsPair)
             {
 
                 ret = item.ToString().Split('.');
                 foreach (string item1 in ret)
                 {
-                    if(item1.)
+                    foreach (var item2 in dic)
+                    {
+                        if (item2.Value.IndexOf(item1) == -1) {
+                            count1++;
+                        }
+
+                    }
+                      //  bool found = dic[1].ToString().IndexOf(item1, 0, 7) != -1;
+
+                   // if (item1.)
                 }
 
                 // Console.WriteLine(item);
