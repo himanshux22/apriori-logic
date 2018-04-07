@@ -112,12 +112,12 @@ namespace ConsoleApp13
                 Console.WriteLine("Key: {0}, Value: {1}", item.Key, item.Value);
             }
             //creating the itemset with two pair of items
-            CreateItemset(SupportOfSingle1);
+            CreatePairItemset(SupportOfSingle1, supportInNumber);
 
             return a;
         }
 
-        public static void CreateItemset(Dictionary<string, int> supportOfSingle1)
+        public static void CreatePairItemset(Dictionary<string, int> supportOfSingle1,int supportInNumber)
         {
 
 
@@ -148,34 +148,50 @@ namespace ConsoleApp13
                 Console.WriteLine(item);
             }
             */
-            supportForpairs(twoElementsPair);
+            supportForpairs(twoElementsPair, supportInNumber);
 
         }
 
-        public static void supportForpairs(ArrayList twoElementsPair)
+        public static void supportForpairs(ArrayList twoElementsPair,int support)
         {
             
             var SupportOfPair = new Dictionary<string, int>();
+            //adding the elements to dictionary
             foreach (string item in twoElementsPair)
             {
                 SupportOfPair.Add(item, ItemCountPair(item));
 
             }
 
-        //printing the pairs
             
-            foreach (KeyValuePair<string, int> item in SupportOfPair)
+            var SupportOfPair1 = new Dictionary<string, int>();
+
+            //checking item greater than the support, verifying support and removing the elements
+            foreach (var e in SupportOfPair)
+            {
+                if (e.Value >= support)
+                {
+                    SupportOfPair1.Add(e.Key, e.Value);
+                }
+            }
+
+            //printing the pairs
+
+            foreach (KeyValuePair<string, int> item in SupportOfPair1)
             {
                 Console.WriteLine("Key: {0}, Value: {1}", item.Key, item.Value);
             }
 
+            //triple set creation
+            CreateTripleItemset(SupportOfPair1);
         }
 
         public static int ItemCountPair(string item)
         {
             string[] ret = item.ToString().Split('.');
             int count = 0;
-            //Console.WriteLine(ret[0]);
+
+            //checking the pair is present in the dictionary(main data)
 
             foreach (string items in dic.Values)
                 {
@@ -188,5 +204,92 @@ namespace ConsoleApp13
             
             return count;
         }
+
+
+
+        public static void CreateTripleItemset(Dictionary<string, int> SupportOfPair)
+        {
+
+
+            var temp = SupportOfPair;
+            //copying the unique element from second result 
+            //copying it to arraylist to sort it out
+            ArrayList s1 = new ArrayList();
+            ArrayList fourElementsPair = new ArrayList();
+
+            foreach (var item in temp)
+            {
+                s1.Add(item.Key);
+            }
+
+            s1.Sort();
+
+            for (int i = 0; i < s1.Count; i++)
+            {
+
+                for (int j = i + 1; j < s1.Count; j++)
+                {
+
+                    fourElementsPair.Add(s1[i] + "." + s1[j]);
+                }
+            }
+
+            //create three pair
+            ArrayList threeElementsPair = new ArrayList();
+
+            CreateThreePair(fourElementsPair,  out threeElementsPair);
+
+            //print list of triple
+            foreach (var item in threeElementsPair)
+            {
+                Console.WriteLine(item);
+            }
+            
+
+        }
+
+        public static void CreateThreePair(ArrayList fourElementsPair,  out ArrayList threeElementsPair)
+        {
+            string[] ret= { };
+            string[] ret1 = { };
+            //var SupportOfTriple = new Dictionary<string, int>();
+
+            //converting four to three
+            foreach (string fourVal in fourElementsPair) {
+                ret= fourVal.ToString().Split('.');
+                ret1=CheckDublicate(ret);
+
+            }
+
+            foreach (string x in ret)
+            {
+                Console.WriteLine(x);
+            }
+            threeElementsPair = fourElementsPair;
+        }
+
+        public static string[] CheckDublicate(string[] ret)
+        {
+            ArrayList Temp=new ArrayList();
+            ArrayList result = new ArrayList();
+
+            int i = 0;
+            string valThree = "";
+            foreach (var res in ret.Distinct()) {
+
+               // valThree = valThree + "." +res;
+                Temp.Add(res);
+
+            }
+            result.AddRange(Temp);
+            foreach (string s in result) {
+
+                Console.WriteLine(s);
+
+            }
+            return ret;
+        }
     }
+
+
 }
