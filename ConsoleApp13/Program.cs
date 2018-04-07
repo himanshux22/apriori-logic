@@ -142,47 +142,51 @@ namespace ConsoleApp13
 
                     twoElementsPair.Add(s1[i] + "." + s1[j]);
             } }
-            //print list of pairs
+            /*print list of pairs
                 foreach (var item in twoElementsPair)
             {
                 Console.WriteLine(item);
             }
-
+            */
             supportForpairs(twoElementsPair);
 
         }
 
         public static void supportForpairs(ArrayList twoElementsPair)
         {
-            string[] ret;
-            int count1=0, count2=0;
-            foreach (var item in twoElementsPair)
-            {
-
-                ret = item.ToString().Split('.');
-                foreach (string item1 in ret)
-                {
-                    foreach (var item2 in dic)
-                    {
-                        if (item2.Value.IndexOf(item1) == -1) {
-                            count1++;
-                        }
-
-                    }
-                      //  bool found = dic[1].ToString().IndexOf(item1, 0, 7) != -1;
-
-                   // if (item1.)
-                }
-
-                // Console.WriteLine(item);
-            }
-
+            
             var SupportOfPair = new Dictionary<string, int>();
-            foreach (String item in unique)
+            foreach (string item in twoElementsPair)
             {
-                SupportOfPair.Add(item, ItemCount(item, s1));
+                SupportOfPair.Add(item, ItemCountPair(item));
+
             }
+
+        //printing the pairs
+            
+            foreach (KeyValuePair<string, int> item in SupportOfPair)
+            {
+                Console.WriteLine("Key: {0}, Value: {1}", item.Key, item.Value);
+            }
+
         }
 
+        public static int ItemCountPair(string item)
+        {
+            string[] ret = item.ToString().Split('.');
+            int count = 0;
+            //Console.WriteLine(ret[0]);
+
+            foreach (string items in dic.Values)
+                {
+                    if (items.Contains(ret[0])&& items.Contains(ret[1]))
+                    {
+                     count++;
+                    }
+            }
+
+            
+            return count;
+        }
     }
 }
