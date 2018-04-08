@@ -8,14 +8,7 @@ namespace ConsoleApp13
     class Program
     {
 
-        static Dictionary<string, string> dic = new Dictionary<string, string>
-            {
-                { "1", "m, o, n, k, e, y" },
-                { "2", "d, o, n, k, e, y" },
-                { "3", "m, a, k, e" },
-                { "4", "m, u, c, k, y" },
-                { "5", "c, o,o, k, e" }
-            };
+       
 
         public string[]  SplitString(string s) {
             string[] values = s.Split(',');
@@ -30,10 +23,23 @@ namespace ConsoleApp13
         public static void Main(string[] args)
         {
 
-            
+           /* Dictionary<string, string> dic = new Dictionary<string, string>
+              { { "t1"  ," 1, 3, 4"},
+            { "t2"  , "2, 3, 5"},
+            { "t3"  ,"1, 2, 3, 5"},
+            { "t4"  , "2, 5"},
+            { "t5"  , "1, 2, 3, 5"} };*/
 
-            
-     
+            Dictionary<string, string> dic = new Dictionary<string, string>
+            {
+                { "1", "m, o, n, k, e, y" },
+                { "2", "d, o, n, k, e, y" },
+                { "3", "m, a, k, e" },
+                { "4", "m, u, c, k, y" },
+                { "5", "c, o,o, k, e" }
+            };
+
+
             int support =60;
             int confidence = 80;
             Apriori(dic, support, confidence);
@@ -44,7 +50,7 @@ namespace ConsoleApp13
 
         public static void Apriori(Dictionary<string, string> dic, int support, int confidence)
         {
-            FindSingleSupportcount(support);
+            FindSingleSupportcount(support,dic);
 
 
 
@@ -65,7 +71,7 @@ namespace ConsoleApp13
         }
 
      
-        public static ArrayList FindSingleSupportcount(int support)
+        public static ArrayList FindSingleSupportcount(int support, Dictionary<string, string> dic)
         {
             Program p = new Program();
             ArrayList a= new ArrayList();//collection of dublicate and other elements
@@ -112,12 +118,12 @@ namespace ConsoleApp13
                 Console.WriteLine("Key: {0}, Value: {1}", item.Key, item.Value);
             }
             //creating the itemset with two pair of items
-            CreatePairItemset(SupportOfSingle1, supportInNumber);
+            CreatePairItemset(SupportOfSingle1, supportInNumber,dic);
 
             return a;
         }
 
-        public static void CreatePairItemset(Dictionary<string, int> supportOfSingle1,int supportInNumber)
+        public static void CreatePairItemset(Dictionary<string, int> supportOfSingle1,int supportInNumber, Dictionary<string, string> dic)
         {
 
 
@@ -148,18 +154,18 @@ namespace ConsoleApp13
                 Console.WriteLine(item);
             }
             */
-            supportForpairs(twoElementsPair, supportInNumber);
+            supportForpairs(twoElementsPair, supportInNumber,dic);
 
         }
 
-        public static void supportForpairs(ArrayList twoElementsPair,int support)
+        public static void supportForpairs(ArrayList twoElementsPair,int support, Dictionary<string, string> dic)
         {
             
             var SupportOfPair = new Dictionary<string, int>();
             //adding the elements to dictionary
             foreach (string item in twoElementsPair)
             {
-                SupportOfPair.Add(item, ItemCountPair(item));
+                SupportOfPair.Add(item, ItemCountPair(item,dic));
 
             }
 
@@ -183,10 +189,10 @@ namespace ConsoleApp13
             }
 
             //triple set creation
-            CreateTripleItemset(SupportOfPair1);
+            CreateTripleItemset(SupportOfPair1,dic,support);
         }
 
-        public static int ItemCountPair(string item)
+        public static int ItemCountPair(string item, Dictionary<string, string> dic)
         {
             string[] ret = item.ToString().Split('.');
             int count = 0;
@@ -207,7 +213,7 @@ namespace ConsoleApp13
 
 
 
-        public static void CreateTripleItemset(Dictionary<string, int> SupportOfPair)
+        public static void CreateTripleItemset(Dictionary<string, int> SupportOfPair, Dictionary<string, string> dic,int support)
         {
 
 
@@ -235,59 +241,105 @@ namespace ConsoleApp13
             }
 
             //create three pair
-            ArrayList threeElementsPair = new ArrayList();
+            HashSet<string> threeElementsPair = new HashSet<string>();
 
-            CreateThreePair(fourElementsPair,  out threeElementsPair);
+            CreateThreePair(fourElementsPair,  out threeElementsPair, dic);
+
+            var SupportOfTriple = new Dictionary<string, int>();
+            //adding the elements to dictionary
+            foreach (string item in threeElementsPair)
+            {
+                if (ItemCountTriple(item, dic) >= support)
+                {
+                    SupportOfTriple.Add(item, ItemCountTriple(item, dic));
+                }
+
+            }
 
             //print list of triple
-            foreach (var item in threeElementsPair)
+            foreach (KeyValuePair<string, int> item in SupportOfTriple)
             {
-                Console.WriteLine(item);
+                Console.WriteLine("Key: {0}, Value: {1}", item.Key, item.Value);
             }
-            
+
 
         }
 
-        public static void CreateThreePair(ArrayList fourElementsPair,  out ArrayList threeElementsPair)
+        public static int ItemCountTriple(string item, Dictionary<string, string> dic)
+        {
+
+            string[] ret = item.ToString().Split('.');
+            int count = 0;
+
+            //checking the triplet is present in the dictionary(main data)
+
+            foreach (string items in dic.Values)
+            {
+                if (items.Contains(ret[0]) && items.Contains(ret[1])&&items.Contains(ret[2]))
+                {
+                    count++;
+                }
+            }
+
+
+            return count;
+        }
+
+        public static void CreateThreePair(ArrayList fourElementsPair,  out HashSet<string> threeElementsPair, Dictionary<string, string> dic)
         {
             string[] ret= { };
-            string[] ret1 = { };
+            ArrayList ret1=new ArrayList();
             //var SupportOfTriple = new Dictionary<string, int>();
 
             //converting four to three
             foreach (string fourVal in fourElementsPair) {
+                
                 ret= fourVal.ToString().Split('.');
-                ret1=CheckDublicate(ret);
+                ret1.AddRange(CheckDublicate(ret));
 
             }
+            HashSet<string> lastResult = new HashSet<string>();
 
-            foreach (string x in ret)
+            foreach (string x in ret1)
             {
-                Console.WriteLine(x);
+                lastResult.Add(x);
             }
-            threeElementsPair = fourElementsPair;
+          
+            threeElementsPair = lastResult;
         }
 
-        public static string[] CheckDublicate(string[] ret)
+        public static ArrayList CheckDublicate(string[] ret)
         {
             ArrayList Temp=new ArrayList();
             ArrayList result = new ArrayList();
 
-            int i = 0;
+          
             string valThree = "";
             foreach (var res in ret.Distinct()) {
 
-               // valThree = valThree + "." +res;
                 Temp.Add(res);
+            
 
             }
-            result.AddRange(Temp);
-            foreach (string s in result) {
+            //sorting the single elements
+            Temp.Sort();
+            foreach (string res in Temp)
+            {
 
-                Console.WriteLine(s);
-
+                if (valThree != "")
+                {
+                    valThree = valThree + "." + res;
+                }
+                else
+                    valThree = res;
             }
-            return ret;
+
+            if (valThree.Length <= 5)
+            {
+                result.Add(valThree);
+            }
+
+            return result;
         }
     }
 
