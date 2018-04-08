@@ -12,7 +12,7 @@ namespace ConsoleApp13
 
         public string[]  SplitString(string s) {
             string[] values = s.Split(',');
-            for (int i = 0; i < values.Length; i++)
+            for (int i = 0; i<values.Length; i++)
             {
                 values[i] = values[i].Trim();
             }
@@ -23,14 +23,14 @@ namespace ConsoleApp13
         public static void Main(string[] args)
         {
 
-           /* Dictionary<string, string> dic = new Dictionary<string, string>
-              { { "t1"  ," 1, 3, 4"},
-            { "t2"  , "2, 3, 5"},
-            { "t3"  ,"1, 2, 3, 5"},
-            { "t4"  , "2, 5"},
-            { "t5"  , "1, 2, 3, 5"} };*/
+          Dictionary<string, string> dic = new Dictionary<string, string>
+              { { "t1"  ,"m, t, ca"},
+            { "t2"  , "e, t, c"},
+            { "t3"  ,"m, e, t, c"},
+            { "t4"  , "e, c"},
+            { "t5"  , "j"} };
 
-            Dictionary<string, string> dic = new Dictionary<string, string>
+           /*   Dictionary<string, string> dic = new Dictionary<string, string>
             {
                 { "1", "m, o, n, k, e, y" },
                 { "2", "d, o, n, k, e, y" },
@@ -38,9 +38,9 @@ namespace ConsoleApp13
                 { "4", "m, u, c, k, y" },
                 { "5", "c, o,o, k, e" }
             };
+*/
 
-
-            int support =60;
+            int support =40;
             int confidence = 80;
             Apriori(dic, support, confidence);
          
@@ -83,6 +83,7 @@ namespace ConsoleApp13
                 a.AddRange(p.SplitString(item.Value));
             }
 
+
             HashSet<String> unique = new HashSet<string>();
 
             ArrayList s1 = a;
@@ -99,6 +100,7 @@ namespace ConsoleApp13
             //adding the hashset value to dictionary with support count
             foreach (String item in unique)
             {
+
                 SupportOfSingle.Add(item, ItemCount(item, s1));
             }
 
@@ -165,31 +167,23 @@ namespace ConsoleApp13
             //adding the elements to dictionary
             foreach (string item in twoElementsPair)
             {
-                SupportOfPair.Add(item, ItemCountPair(item,dic));
-
-            }
-
-            
-            var SupportOfPair1 = new Dictionary<string, int>();
-
-            //checking item greater than the support, verifying support and removing the elements
-            foreach (var e in SupportOfPair)
-            {
-                if (e.Value >= support)
+                if (ItemCountPair(item, dic) >= support)
                 {
-                    SupportOfPair1.Add(e.Key, e.Value);
+                    SupportOfPair.Add(item, ItemCountPair(item, dic));
                 }
             }
 
+            
+         
             //printing the pairs
 
-            foreach (KeyValuePair<string, int> item in SupportOfPair1)
+            foreach (KeyValuePair<string, int> item in SupportOfPair)
             {
                 Console.WriteLine("Key: {0}, Value: {1}", item.Key, item.Value);
             }
 
             //triple set creation
-            CreateTripleItemset(SupportOfPair1,dic,support);
+            CreateTripleItemset(SupportOfPair,dic,support);
         }
 
         public static int ItemCountPair(string item, Dictionary<string, string> dic)
