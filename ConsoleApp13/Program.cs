@@ -22,25 +22,27 @@ namespace ConsoleApp13
 
         public static void Main(string[] args)
         {
-
+            //no dot and comma should be included in the keywords
           Dictionary<string, string> dic = new Dictionary<string, string>
-              { { "t1"  ,"m, t, ca"},
-            { "t2"  , "e, t, c"},
-            { "t3"  ,"m, e, t, c"},
-            { "t4"  , "e, c"},
-            { "t5"  , "j"} };
+              { { "t1"  ,"Mango, Onion, Nintendo, Key-chain, Eggs, Yo-yo"},
+            { "t2"  , " Doll, Onion, Nintendo, Key-chain, Eggs, Yo-yo"},
+            { "t3"  ,"Mango, Apple, Key-chain, Eggs"},
+            { "t4"  , "Mango, Umbrella, Corn, Key-chain, Yo-yo"},
+            { "t5"  , "Corn, Onion, Onion, Key-chain, Ice-cream, Eggs"} };
 
-           /*   Dictionary<string, string> dic = new Dictionary<string, string>
-            {
-                { "1", "m, o, n, k, e, y" },
-                { "2", "d, o, n, k, e, y" },
-                { "3", "m, a, k, e" },
-                { "4", "m, u, c, k, y" },
-                { "5", "c, o,o, k, e" }
-            };
-*/
+   
 
-            int support =40;
+            /*   Dictionary<string, string> dic = new Dictionary<string, string>
+             {
+                 { "1", "m, o, n, k, e, y" },
+                 { "2", "d, o, n, k, e, y" },
+                 { "3", "m, a, k, e" },
+                 { "4", "m, u, c, k, y" },
+                 { "5", "c, o,o, k, e" }
+             };
+ */
+
+            int support =60;
             int confidence = 80;
             Apriori(dic, support, confidence);
          
@@ -111,8 +113,9 @@ namespace ConsoleApp13
             }
 
             //
-         
+
             //printing the items
+            Console.WriteLine("\nSingle item set");
             foreach (KeyValuePair<string, int> item in SupportOfSingle)
             {
                 Console.WriteLine("Key: {0}, Value: {1}", item.Key, item.Value);
@@ -171,10 +174,10 @@ namespace ConsoleApp13
                 }
             }
 
-            
-         
-            //printing the pairs
 
+
+            //printing the pairs
+            Console.WriteLine("\nDouble item set");
             foreach (KeyValuePair<string, int> item in SupportOfPair)
             {
                 Console.WriteLine("Key: {0}, Value: {1}", item.Key, item.Value);
@@ -252,6 +255,8 @@ namespace ConsoleApp13
             CreateThreePair(fourElementsPair,  out threeElementsPair, dic);
 
             var SupportOfTriple = new Dictionary<string, int>();
+
+
             //adding the elements to dictionary
             foreach (string item in threeElementsPair)
             {
@@ -263,6 +268,8 @@ namespace ConsoleApp13
             }
 
             //print list of triple
+            Console.WriteLine("\nTriple item set");
+
             foreach (KeyValuePair<string, int> item in SupportOfTriple)
             {
                 Console.WriteLine("Key: {0}, Value: {1}", item.Key, item.Value);
@@ -298,6 +305,7 @@ namespace ConsoleApp13
         public static void CreateThreePair(ArrayList fourElementsPair,  out HashSet<string> threeElementsPair, Dictionary<string, string> dic)
         {
             string[] ret= { };
+           
             ArrayList ret1=new ArrayList();
             //var SupportOfTriple = new Dictionary<string, int>();
 
@@ -308,12 +316,16 @@ namespace ConsoleApp13
                 ret1.AddRange(CheckDublicate(ret));
 
             }
+          
+
             HashSet<string> lastResult = new HashSet<string>();
 
             foreach (string x in ret1)
             {
                 lastResult.Add(x);
             }
+           
+
           
             threeElementsPair = lastResult;
         }
@@ -322,7 +334,6 @@ namespace ConsoleApp13
         {
             ArrayList Temp=new ArrayList();
             ArrayList result = new ArrayList();
-
           
             string valThree = "";
             foreach (var res in ret.Distinct()) {
@@ -333,6 +344,7 @@ namespace ConsoleApp13
             }
             //sorting the single elements
             Temp.Sort();
+          
             foreach (string res in Temp)
             {
 
@@ -344,10 +356,14 @@ namespace ConsoleApp13
                     valThree = res;
             }
 
-            if (valThree.Length <= 5)
+            //counting the dots
+            int count = valThree.Count(x => x == '.');
+
+            if (count==2)
             {
                 result.Add(valThree);
             }
+           
 
             return result;
         }
