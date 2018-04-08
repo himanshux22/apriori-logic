@@ -22,7 +22,7 @@ namespace ConsoleApp13
         {
             //no dot and comma should be included in the keywords
     /*      Dictionary<string, string> dic = new Dictionary<string, string>
-              { { "t1"  ,"Mango, Onion, Nintendo, Key-chain, Eggs, Yo-yo"},
+              { { "t1"  ,"12, Onion, Nintendo, Key-chain, Eggs, Yo-yo"},
             { "t2"  , " Doll, Onion, Nintendo, Key-chain, Eggs, Yo-yo"},
             { "t3"  ,"Mango, Apple, Key-chain, Eggs"},
             { "t4"  , "Mango, Umbrella, Corn, Key-chain, Yo-yo"},
@@ -329,6 +329,7 @@ namespace ConsoleApp13
             threeElementsPair = lastResult;
         }
 
+
         public static ArrayList CheckDublicate(string[] ret)
         {
             ArrayList Temp=new ArrayList();
@@ -365,6 +366,12 @@ namespace ConsoleApp13
            
 
             return result;
+        }
+
+        public static void FindConfidence()
+        {
+
+
         }
     }
 
