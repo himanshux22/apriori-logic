@@ -8,8 +8,6 @@ namespace ConsoleApp13
     class Program
     {
 
-       
-
         public string[]  SplitString(string s) {
             string[] values = s.Split(',');
             for (int i = 0; i<values.Length; i++)
@@ -23,26 +21,30 @@ namespace ConsoleApp13
         public static void Main(string[] args)
         {
             //no dot and comma should be included in the keywords
-          Dictionary<string, string> dic = new Dictionary<string, string>
+    /*      Dictionary<string, string> dic = new Dictionary<string, string>
               { { "t1"  ,"Mango, Onion, Nintendo, Key-chain, Eggs, Yo-yo"},
             { "t2"  , " Doll, Onion, Nintendo, Key-chain, Eggs, Yo-yo"},
             { "t3"  ,"Mango, Apple, Key-chain, Eggs"},
             { "t4"  , "Mango, Umbrella, Corn, Key-chain, Yo-yo"},
-            { "t5"  , "Corn, Onion, Onion, Key-chain, Ice-cream, Eggs"} };
+            { "t5"  , "Corn, Onion, Onion, Key-chain, Ice-cream, Eggs"} }; */
 
    
 
-            /*   Dictionary<string, string> dic = new Dictionary<string, string>
+               Dictionary<string, string> dic = new Dictionary<string, string>
              {
-                 { "1", "m, o, n, k, e, y" },
-                 { "2", "d, o, n, k, e, y" },
-                 { "3", "m, a, k, e" },
-                 { "4", "m, u, c, k, y" },
-                 { "5", "c, o,o, k, e" }
-             };
- */
+                 { "1", "1,2,3,4" },
+                 { "2", "1,2,4" },
+                 { "3", "1,2" },
+                 { "4", "2,3,4" },
+                   {"5","2,3" },
+                   { "6","3,4" },
+                   { "7","2,4"}
 
-            int support =60;
+
+             };
+
+
+            int support =43;
             int confidence = 80;
             Apriori(dic, support, confidence);
          
@@ -208,9 +210,6 @@ namespace ConsoleApp13
 
             }
 
-
-
-          
 
             //checking the pair is present in the dictionary(main data)
 
