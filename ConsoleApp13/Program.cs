@@ -95,41 +95,39 @@ namespace ConsoleApp13
             {
                 unique.Add(item);
             }
+           
+
             //single support list
             var SupportOfSingle = new Dictionary<string, int>();
-            //adding the hashset value to dictionary with support count
+            //adding the hashset value to dictionary with support count, list with greater support
             foreach (String item in unique)
             {
+                //checking item greater than the support
 
-                SupportOfSingle.Add(item, ItemCount(item, s1));
-            }
-
-            //list with greater support
-            var SupportOfSingle1 = new Dictionary<string, int>();
-            //checking item greater than the support
-            foreach (var e in SupportOfSingle)
-            {
-                if (e.Value >= supportInNumber)
+                if (ItemCount(item, s1) >= supportInNumber)
                 {
-                    SupportOfSingle1.Add(e.Key, e.Value);
+                    SupportOfSingle.Add(item, ItemCount(item, s1));
                 }
             }
+
+            //
+         
             //printing the items
-            foreach (KeyValuePair<string, int> item in SupportOfSingle1)
+            foreach (KeyValuePair<string, int> item in SupportOfSingle)
             {
                 Console.WriteLine("Key: {0}, Value: {1}", item.Key, item.Value);
             }
             //creating the itemset with two pair of items
-            CreatePairItemset(SupportOfSingle1, supportInNumber,dic);
+            CreatePairItemset(SupportOfSingle, supportInNumber,dic);
 
             return a;
         }
 
-        public static void CreatePairItemset(Dictionary<string, int> supportOfSingle1,int supportInNumber, Dictionary<string, string> dic)
+        public static void CreatePairItemset(Dictionary<string, int> supportOfSingle,int supportInNumber, Dictionary<string, string> dic)
         {
 
 
-            var temp = supportOfSingle1;
+            var temp = supportOfSingle;
             //copying the unique element from first result 
             //copying it to arraylist to sort it out
             ArrayList s1 = new ArrayList();
@@ -191,15 +189,29 @@ namespace ConsoleApp13
             string[] ret = item.ToString().Split('.');
             int count = 0;
 
+
+            Program p = new Program();
+            ArrayList a = new ArrayList();//collection of dublicate and other elements
+         
+
+            foreach (string ui in dic.Values)
+            {
+                a.Clear();
+                a.AddRange(p.SplitString(ui));
+                if (a.Contains(ret[0]) && a.Contains(ret[1]))
+                {
+                    count++;
+                }
+
+            }
+
+
+
+          
+
             //checking the pair is present in the dictionary(main data)
 
-            foreach (string items in dic.Values)
-                {
-                    if (items.Contains(ret[0])&& items.Contains(ret[1]))
-                    {
-                     count++;
-                    }
-            }
+           
 
             
             return count;
@@ -266,16 +278,20 @@ namespace ConsoleApp13
             int count = 0;
 
             //checking the triplet is present in the dictionary(main data)
+            Program p = new Program();
+            ArrayList a = new ArrayList();//collection of dublicate and other elements
 
-            foreach (string items in dic.Values)
+
+            foreach (string ui in dic.Values)
             {
-                if (items.Contains(ret[0]) && items.Contains(ret[1])&&items.Contains(ret[2]))
+                a.Clear();
+                a.AddRange(p.SplitString(ui));
+                if (a.Contains(ret[0]) && a.Contains(ret[1])&& a.Contains(ret[2]))
                 {
                     count++;
                 }
+
             }
-
-
             return count;
         }
 
